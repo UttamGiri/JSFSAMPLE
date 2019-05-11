@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml"
+                >
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{accountEditor.initToGetViewData}" /> 
+    </f:metadata>
+    <ui:define name="pageTitle">
+        <h:outputText value="#{bundle.Account_Edit_title}"></h:outputText>
+    </ui:define>
+    <ui:define name="body">
+        <h:form id="editAccountFormId" >
+                <p:panelGrid id="pangridId"  columns="3" rendered="#{accountEditor.selected != null}" styleClass="noborder" >
+                    <h:outputLabel value="#{bundle.Account_Id}" for="accountId" />
+                    <h:outputText id="accountId" value="#{accountEditor.selected.id}"  />
+                    <p:message id="msgAccntId" for="accountId"/>
+                    <h:outputLabel value="#{bundle.Account_Name}" for="nameId" />
+                    <p:inputText id="nameId" value="#{accountEditor.selected.name}" validatorMessage="Name length should be between 3 and 50" >
+                        <f:validateLength minimum="3" maximum="50"   />
+                        <p:ajax event="blur" process="@this" update="msgNameId nameId " />
+                    </p:inputText>
+                    <p:message id="msgNameId" for="nameId"/>
+                    <h:outputLabel value="#{bundle.Account_Balance}" for="balanceId" />
+                    <p:inputText id="balanceId" value="#{accountEditor.selected.balance}" valueChangeListener="#{accountEditor.onBalanceChange}" >
+                        <f:convertNumber groupingUsed="true" for="balanceId"  /> 
+<!--                              <f:validator validatorId="com.validator.requiredCustomValidator" /> -->
+                        <p:ajax event="blur" process="@this" update="msgBalanaceId balanceId dateId"/>
+                    </p:inputText>
+                    <p:message id="msgBalanaceId" for="balanceId" />
+                    <h:outputLabel value="#{bundle.Account_Last_Transaction_Date}" for="dateId" />
+                    <h:panelGroup >
+                        <p:inputMask id="dateId" value="#{accountEditor.selected.lastTransactionDate}" mask="99/99/9999"  disabled="#{accountEditor.transDateDisabled eq true}"   >                            
+                            <f:convertDateTime  pattern="MM/dd/yyyy" />   
+<!--                               <f:validator validatorId="com.validator.requiredCustomValidator" /> -->
+                            <p:ajax event="blur"  process="@this" update="msgDateId dateId "/>
+                        </p:inputMask>
+                        <p:watermark for="dateId" value="MM/DD/YYYY"/>
+                    </h:panelGroup>
+                    <p:message id="msgDateId" for="dateId"/>
+                </p:panelGrid>
+
+            <p:commandButton action="#{accountEditor.save}" value="#{bundle.Save}" />
+            <p:commandButton value="#{bundle.Cancel}" immediate="true"  action="/account/viewAccounts?faces-redirect=true"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

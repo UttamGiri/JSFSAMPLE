@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">JSF CODING</ui:insert></title>
+        <h:outputStylesheet name="css/assignment.css"/>
+    </h:head>
+    <h:body style="font-size: 10px;">
+        <p:layout fullPage="true">  
+            <p:layoutUnit position="north" collapsible="true" >
+                <table width="100%" border="0">
+                    <tr><td><h2 align="center">
+                                <img src="#{resource['style:jsfLogo.gif']}" alt="Logo" width="133" height="26" />
+                                JSF ASSIGNMENT</h2>
+                        </td>
+                    </tr>
+                </table>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="300" header=": JSF_CODING :" resizable="true" closable="false" collapsible="true">  
+                <h:form>
+                    <p:accordionPanel  widgetVar="accor" id="mainAcc" dynamic="true">  
+                        <p:tab title="Account" >  
+                            <h:panelGrid columns="1">
+                                <h:commandLink action="/account/viewAccounts.xhtml?faces-redirect=true" value=" viewAccount" />
+                            </h:panelGrid>  
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:form>
+            </p:layoutUnit>  
+            <p:layoutUnit position="center">               
+                <p:panel>
+                    <f:facet name="header">
+                        <ui:insert name="pageTitle">Default Title</ui:insert>
+                    </f:facet>
+                    <ui:insert name="body"> Default Body</ui:insert>
+                </p:panel>
+            </p:layoutUnit>  
+        </p:layout>  
+
+    </h:body>
+
+</html>

@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template.xhtml" 
+                >
+    <ui:define name="pageTitle">
+        <h:outputText value="#{bundle.Account_View_title}"></h:outputText>
+    </ui:define>
+    <ui:define name="body">
+        <h:form id="viewAcountFormId">
+            <h:messages id="msgId"  errorStyle="color: red" infoStyle="color: green" layout="table" />
+                  <p:dataTable id="viewAccountId" value="#{accountViewer.accounts}" var="account"
+                         paginator="true" rows="10"
+                         paginatorTemplate="#{button.DatatablePaginationTemplate}"
+                         rowsPerPageTemplate="5,10,15"  paginatorPosition="bottom"
+                         styleClass="noborder"
+                         >
+                
+                <p:column sortBy="#{account.id}" filterBy="#{account.id}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.Account_Id}"/>
+                    </f:facet>
+                    <h:outputText value="#{account.id}"/>
+                </p:column>
+                <p:column sortBy="#{account.name}" filterBy="#{account.name}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.Account_Name}"/>
+                    </f:facet>
+                    <h:outputText value="#{account.name}"/>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.Account_Balance}"/>
+                    </f:facet>
+                    <h:outputText id="balancePosId" value="#{account.balance}" rendered="#{account.balance ge 0}" >
+                        <f:convertNumber groupingUsed="true" for="balancePosId" type="currency"  /> 
+                    </h:outputText>
+                    <h:outputText id="balanceNegId" value="#{account.balance}" rendered="#{account.balance lt 0}">
+                        <f:convertNumber groupingUsed="true" for="balanceNegId" type="currency" integerOnly="true"  /> 
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.Account_Last_Transaction_Date}" />
+                    </f:facet>
+                    <h:outputText value="#{account.lastTransactionDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" /> 
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <p:commandButton  actionListener="#{accountViewer.delete}" value="#{bundle.Delete}" update=":viewAcountFormId:viewAccountId :viewAcountFormId:msgId" >
+                    <f:attribute name="selected" value="#{account}" />
+                    </p:commandButton>
+
+                </p:column>
+                <p:column>
+                    <p:commandButton  id="editBtnId" value="#{bundle.Edit}"  
+                                      action="#{accountViewer.edit}">
+                        <f:setPropertyActionListener target="#{accountViewer.editId}" value="#{account.id}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
